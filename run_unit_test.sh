@@ -5,12 +5,9 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-UNIT_TEST_TOP_DIR=/home/martinlp/nextflow/per_tool_translation/
-UNIT_TEST_CWL_WF_DIR=gdc-rnaseq-cwl
-UNIT_TEST_NF_WF_DIR=martin-rnaseq-nf
-UNIT_TEST_SCRIPT_DIR=${UNIT_TEST_TOP_DIR}/scripts/
-UNIT_TEST_NEXTFLOW_BIN=/home/martinlp/nextflow/nextflow
-UNIT_TEST_CWLTOOL_BIN=cwltool
+set -a
+. ./.env
+set +a
 
 STEP_NAME=$1
 if [ $# != 1 ]; then

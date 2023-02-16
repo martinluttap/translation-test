@@ -1,9 +1,9 @@
 #!/bin/bash
+set -a
+. ./.env
+set +a
 
 PREP_NF_STEP_NAME=$1
-PREP_NF_CWL_WF_DIR=gdc-rnaseq-cwl
-PREP_NF_NF_WF_DIR=martin-rnaseq-nf
-PREP_NF_TOP_DIR=/home/martinlp/nextflow/per_tool_translation/
 
 CWL_PATH=${PREP_NF_TOP_DIR}/cwl/${PREP_NF_CWL_WF_DIR}/${PREP_NF_STEP_NAME}/${PREP_NF_STEP_NAME}.cwl
 NF_PATH=${PREP_NF_TOP_DIR}/nf/${PREP_NF_NF_WF_DIR}/${PREP_NF_STEP_NAME}/${PREP_NF_STEP_NAME}.nf

@@ -1,9 +1,10 @@
 #!/bin/bash
-
-REG_TEST_SCRIPT_DIR=/home/martinlp/nextflow/per_tool_translation/scripts/
-
+set -a
+. ./.env
+set +a
 
 STEPS="
+fastqc
 "
 
 set -e
