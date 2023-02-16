@@ -1,14 +1,19 @@
 #!/bin/bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Import .env file
 set -a
 . ./.env
 set +a
 
-PREP_YAML_STEP_NAME=$1
+STEP_NAME=$1
 
-python3 ${PREP_YAML_TOP_DIR}/wfe-parser/parse_cwl.py ${PREP_YAML_TOP_DIR}/wfe-parser/${PREP_YAML_LOG_FILE} --generate_yaml $PREP_YAML_STEP_NAME
+python3 ${TOP_DIR}/wfe-log-parser/parse_cwl.py ${LOG_FILE} --generate_yaml $STEP_NAME
 
-cp ${PREP_YAML_TOP_DIR}/wfe-parser/${PREP_YAML_STEP_NAME}.yaml ${PREP_YAML_TOP_DIR}/cwl/${PREP_YAML_CWL_WF_DIR}/${PREP_YAML_STEP_NAME}/
-cp ${PREP_YAML_TOP_DIR}/wfe-parser/${PREP_YAML_STEP_NAME}.yaml ${PREP_YAML_TOP_DIR}/nf/${PREP_YAML_NF_WF_DIR}/${PREP_YAML_STEP_NAME}/
+cp ${TOP_DIR}/wfe-log-parser/${STEP_NAME}.yaml ${TOP_DIR}/cwl/${CWL_WF_DIR}/${STEP_NAME}/
+cp ${TOP_DIR}/wfe-log-parser/${STEP_NAME}.yaml ${TOP_DIR}/nf/${NF_WF_DIR}/${STEP_NAME}/
 
-rm ${PREP_YAML_TOP_DIR}/wfe-parser/${PREP_YAML_STEP_NAME}.yaml
+rm ${TOP_DIR}/wfe-log-parser/${STEP_NAME}.yaml
 

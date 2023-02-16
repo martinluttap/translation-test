@@ -1,10 +1,9 @@
 #!/bin/bash
-
-# Common error handling operations
 set -o errexit
 set -o nounset
 set -o pipefail
 
+# Import .env file
 set -a
 . ./.env
 set +a
@@ -16,15 +15,15 @@ if [ $# != 1 ]; then
 fi
 
 # First we prepare the NF file and config
-${UNIT_TEST_SCRIPT_DIR}/prepare_nf.sh ${STEP_NAME}
+${TESTING_SCRIPT_DIR}/prepare_nf.sh ${STEP_NAME}
 
 # Then we prepare the YAML input for both CWL and NF
-${UNIT_TEST_SCRIPT_DIR}/prepare_yaml.sh ${STEP_NAME}
+${TESTING_SCRIPT_DIR}/prepare_yaml.sh ${STEP_NAME}
 
 # Then we run the CWL
-pushd ${UNIT_TEST_TOP_DIR}/cwl/${UNIT_TEST_CWL_WF_DIR}/${STEP_NAME}/
+pushd ${TOP_DIR}/cwl/${CWL_WF_DIR}/${STEP_NAME}/
 echo "Running CWL for ${STEP_NAME} ... (in $(pwd))" 
-$UNIT_TEST_CWLTOOL_BIN ${STEP_NAME}.cwl ${STEP_NAME}.yaml
+$CWLTOOL_BIN ${STEP_NAME}.cwl ${STEP_NAME}.yaml
 echo ""
 echo "Finished ${STEP_NAME}. Files in $(pwd): "
 for i in $(ls); do 
@@ -38,7 +37,7 @@ echo ""
 
 # Then we run NF
 popd
-pushd ${UNIT_TEST_TOP_DIR}/nf/${UNIT_TEST_NF_WF_DIR}/${STEP_NAME}/
+pushd ${TOP_DIR}/nf/${NF_WF_DIR}/${STEP_NAME}/
 echo "Running NF for ${STEP_NAME} ... (in $(pwd))" 
 
 # We would like to differentiate a fully-automated translation and a manually fine-tuned one.
@@ -54,7 +53,7 @@ if [ -e "best_nextflow.config" ]; then
 fi
 
 
-$UNIT_TEST_NEXTFLOW_BIN run best_${STEP_NAME}.nf -params-file ${STEP_NAME}.yaml
+$NEXTFLOW_BIN run best_${STEP_NAME}.nf -params-file ${STEP_NAME}.yaml
 NF_WORK_DIR=$(cat .nextflow.log | grep "Task monitor" | sed -r "s/.*workDir:\ (.*)\]/\1/")
 
 echo ""
